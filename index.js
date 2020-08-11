@@ -3,8 +3,11 @@ const getRawBody = require('raw-body');
 const crypto = require('crypto');
 const request = require('request');
 var bodyParser = require('body-parser')
+const fetch = require("node-fetch");
+
 const app = express();
 var port = 80;
+
 
 const secretKey = 'c0a36b35ac7f9bf4a731fe0425e2abf0112650de1d5c14c990e132bf03758150';
 
@@ -98,5 +101,45 @@ app.post('/webhooks/product/update', async (req, res) => {
     res.sendStatus(403)
   }
 })
+
+app.get("/shopify/search/:handle", (req, res) => {
+    var handle = req.params.handle;
+
+    // request('https://bitossi.myshopify.com/admin/api/2019-07/graphql.json', query).then((data) => console.log(data))
+
+    // var wholesale toke = 3cf59c2374d79aab0e0397490e65e1d1
+    // var store = bitossi
+    var token = "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"
+      fetch("https://bitossi.myshopify.com/admin/api/graphql.json", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": token
+        },
+        body: JSON.stringify({
+          query: `
+          {
+            productByHandle(handle: "balter-new-south-wales-lager") {
+              metafields(first: 5, namespace: "location") {
+                edges{
+                  node{
+                    key
+                    value
+                  }
+                }
+              }
+            }
+          }
+           `
+        })
+      })
+        .then(result => {
+          return result.json();
+        })
+        .then(data => {
+          console.log("data returned:\n", data);
+          res.send(data);
+        });    // console.log(query);
+});
 
 app.listen(port, console.log("Running"));
