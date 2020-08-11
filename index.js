@@ -9,7 +9,7 @@ const app = express();
 var port = 80;
 
 
-const secretKey = 'c0a36b35ac7f9bf4a731fe0425e2abf0112650de1d5c14c990e132bf03758150';
+const secretKey = '<>';
 
 app.use('/webhooks', bodyParser.raw({ type: 'application/json' }))
 app.use(bodyParser.json())
@@ -19,8 +19,8 @@ const Shopify = require('shopify-api-node');
 
 const shopify = new Shopify({
   shopName: 'bitossi',
-  apiKey: 'bb758df9c32df36425e0f175f6eebd29',
-  password: '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'
+  apiKey: '<>',
+  password: '<>'
 });
 
 // shopify.on('callLimits', (limits) => console.log(limits));
@@ -109,7 +109,7 @@ app.get("/shopify/search/:handle", (req, res) => {
 
     // var wholesale toke = 3cf59c2374d79aab0e0397490e65e1d1
     // var store = bitossi
-    var token = "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"
+    var token = "<>"
       fetch("https://bitossi.myshopify.com/admin/api/graphql.json", {
         method: "POST",
         headers: {
